@@ -10,6 +10,8 @@ namespace SEUWlanAutoLogin
     {
         public string StuID { get; set; }
         public string Pwd { get; set; }
+        public string IpAddr { get; set; }
+        public string Location { get; set; }
 
         public SEUUser() { }
         public SEUUser(string stuId, string Pwd)

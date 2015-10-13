@@ -12,9 +12,171 @@ namespace SEUWlanAutoLogin
 {
     public partial class Form1 : Form
     {
+        const int BaloonDelayTime = 2500;
+
+        SEUHttpClient myClient = new SEUHttpClient();
+        SEUUser seuUser = new SEUUser();
         public Form1()
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.notifyIcon1.Icon = Properties.Resources.IconNotConnected;
+            this.Icon = Properties.Resources.IconConnected;
+        }
+
+        private void MainWindow_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.Hide();
+            }
+            else if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
+        }
+
+        private async Task<SEUAuthJson> SEUFooLogin(SEUUser seuUser)
+        {
+            var netStatus = await myClient.CampusNetIsLogin();
+            if(netStatus.StuID != "0" )
+            {
+                string baloonText = "当前已登录\r\n一卡通：" + netStatus.StuID + "，IP：" + netStatus.IpAddr +"，地点：" + netStatus.Location;
+                notifyIcon1.ShowBalloonTip(BaloonDelayTime, "无需重复连接", baloonText, System.Windows.Forms.ToolTipIcon.Info);
+
+                labelIP.Text = "IP：" + netStatus.IpAddr;
+                labelAddr.Text = "地点：" + netStatus.Location;
+                labelSuccess.Text = "当前已登录";
+
+                return new SEUAuthJson();
+            }
+            else
+            {
+                var loginResponse = await myClient.CampusNetLogin(seuUser);
+                if(loginResponse.error == null)
+                {
+                    string baloonText = "一卡通：" + loginResponse.login_username + "，IP：" + loginResponse.login_ip + "，地点：" + loginResponse.login_location;
+                    notifyIcon1.ShowBalloonTip(BaloonDelayTime, "连接成功", baloonText, System.Windows.Forms.ToolTipIcon.Info);
+
+                    labelIP.Text = "IP：" + netStatus.IpAddr;
+                    labelAddr.Text = "地点：" + netStatus.Location;
+                    labelSuccess.Text = "登录成功";
+
+                    notifyIcon1.Icon = Properties.Resources.IconConnected;
+                }
+                else
+                {
+                    labelSuccess.Text = "登录失败！";
+                    labelIP.Text = "请检查网络连接，核对用户名和密码。";
+                    labelAddr.Text = "";
+                    notifyIcon1.ShowBalloonTip(BaloonDelayTime, "登录失败！", "请检查网络连接，核对用户名和密码。", System.Windows.Forms.ToolTipIcon.Error);
+                }
+                
+
+                return loginResponse;
+            }
+        }
+
+        private async void buttonLogin_Click(object sender, EventArgs e)
+        {
+            seuUser = new SEUUser(textBoxStuID.Text, textBoxPwd.Text);
+            await SEUFooLogin(seuUser);
+        }
+
+        private async void Connect_Click(object sender, EventArgs e)
+        {
+            seuUser = new SEUUser(textBoxStuID.Text, textBoxPwd.Text);
+            await SEUFooLogin(seuUser);
+        }
+
+        private async Task<bool> SEUFooLogout()
+        {
+            var netStatus = await myClient.CampusNetIsLogin();
+            if (netStatus.StuID != "0") //已连接
+            {
+                var s = await myClient.CampusNetLogout();                
+                notifyIcon1.ShowBalloonTip(BaloonDelayTime, "断开成功", "校园网断开成功！", System.Windows.Forms.ToolTipIcon.Info);
+
+                labelIP.Text = "IP：" + netStatus.IpAddr;
+                labelAddr.Text = "地点：" + netStatus.Location;
+                labelSuccess.Text = "断开成功";
+
+                notifyIcon1.Icon = Properties.Resources.IconNotConnected;
+
+                return true;
+            }
+            else
+            {
+                notifyIcon1.ShowBalloonTip(BaloonDelayTime, "当前未连接", "无需断开！", System.Windows.Forms.ToolTipIcon.Info);
+
+                labelIP.Text = "IP：" + netStatus.IpAddr;
+                labelAddr.Text = "地点：" + netStatus.Location;
+                labelSuccess.Text = "当前未连接";
+
+                return false;
+            }
+
+        }
+
+        private async void buttonLogout_Click(object sender, EventArgs e)
+        {
+            await SEUFooLogout();
+        }
+
+        private async void DisConnect_Click(object sender, EventArgs e)
+        {
+            await SEUFooLogout();
+        }
+
+        private async Task SEUFooStatus()
+        {
+            var netStatus = await myClient.CampusNetIsLogin();
+
+            labelIP.Text = "IP：" + netStatus.IpAddr;
+            labelAddr.Text = "地点：" + netStatus.Location;
+
+            if (netStatus.StuID != "0") //已连接
+            {
+                string baloonText = "当前已登录\r\n一卡通：" + netStatus.StuID + "，IP：" + netStatus.IpAddr + "，地点：" + netStatus.Location;
+                notifyIcon1.ShowBalloonTip(BaloonDelayTime, "当前已连接", baloonText, System.Windows.Forms.ToolTipIcon.Info);
+                labelSuccess.Text = "当前已连接";
+            }
+            else
+            {
+                string baloonText = "未连接！\r\n当前IP：" + netStatus.IpAddr + "，地点：" + netStatus.Location;
+                notifyIcon1.ShowBalloonTip(BaloonDelayTime, "当前未连接", baloonText, System.Windows.Forms.ToolTipIcon.Info);
+                labelSuccess.Text = "当前未连接";
+            }
+        }
+
+        private async void buttonRefreshNetStates_Click(object sender, EventArgs e)
+        {
+            await SEUFooStatus();
+        }
+
+        private async void Status_Click(object sender, EventArgs e)
+        {
+            await SEUFooStatus();
+        }
+
+        private async void timer1_Tick(object sender, EventArgs e)
+        {
+            var netStatus = await myClient.CampusNetIsLogin();
+            if (netStatus.StuID != "0") //已连接
+            {
+                notifyIcon1.Icon = Properties.Resources.IconConnected;
+            }
+            else
+            {
+                notifyIcon1.Icon = Properties.Resources.IconNotConnected;
+            }
+        }
+
     }
 }

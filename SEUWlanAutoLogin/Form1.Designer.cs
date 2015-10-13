@@ -44,6 +44,10 @@
             this.MainWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxAutoLogin = new System.Windows.Forms.CheckBox();
             this.checkBoxSavePwd = new System.Windows.Forms.CheckBox();
+            this.labelIP = new System.Windows.Forms.Label();
+            this.labelAddr = new System.Windows.Forms.Label();
+            this.labelSuccess = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -98,6 +102,7 @@
             this.buttonLogout.TabIndex = 8;
             this.buttonLogout.Text = "断开";
             this.buttonLogout.UseVisualStyleBackColor = true;
+            this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
             // 
             // buttonRefreshNetStates
             // 
@@ -107,6 +112,7 @@
             this.buttonRefreshNetStates.TabIndex = 12;
             this.buttonRefreshNetStates.Text = "刷新";
             this.buttonRefreshNetStates.UseVisualStyleBackColor = true;
+            this.buttonRefreshNetStates.Click += new System.EventHandler(this.buttonRefreshNetStates_Click);
             // 
             // notifyIcon1
             // 
@@ -129,18 +135,21 @@
             this.Connect.Name = "Connect";
             this.Connect.Size = new System.Drawing.Size(112, 22);
             this.Connect.Text = "连接";
+            this.Connect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // DisConnect
             // 
             this.DisConnect.Name = "DisConnect";
             this.DisConnect.Size = new System.Drawing.Size(112, 22);
             this.DisConnect.Text = "断开";
+            this.DisConnect.Click += new System.EventHandler(this.DisConnect_Click);
             // 
             // Status
             // 
             this.Status.Name = "Status";
             this.Status.Size = new System.Drawing.Size(112, 22);
             this.Status.Text = "状态";
+            this.Status.Click += new System.EventHandler(this.Status_Click);
             // 
             // MainWindow
             // 
@@ -169,11 +178,47 @@
             this.checkBoxSavePwd.Text = "保存密码";
             this.checkBoxSavePwd.UseVisualStyleBackColor = true;
             // 
+            // labelIP
+            // 
+            this.labelIP.AutoSize = true;
+            this.labelIP.Location = new System.Drawing.Point(35, 72);
+            this.labelIP.Name = "labelIP";
+            this.labelIP.Size = new System.Drawing.Size(47, 12);
+            this.labelIP.TabIndex = 15;
+            this.labelIP.Text = "labelIP";
+            // 
+            // labelAddr
+            // 
+            this.labelAddr.AutoSize = true;
+            this.labelAddr.Location = new System.Drawing.Point(35, 97);
+            this.labelAddr.Name = "labelAddr";
+            this.labelAddr.Size = new System.Drawing.Size(59, 12);
+            this.labelAddr.TabIndex = 16;
+            this.labelAddr.Text = "labelAddr";
+            // 
+            // labelSuccess
+            // 
+            this.labelSuccess.AutoSize = true;
+            this.labelSuccess.Location = new System.Drawing.Point(35, 50);
+            this.labelSuccess.Name = "labelSuccess";
+            this.labelSuccess.Size = new System.Drawing.Size(77, 12);
+            this.labelSuccess.TabIndex = 17;
+            this.labelSuccess.Text = "labelSuccess";
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 5000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 330);
+            this.Controls.Add(this.labelSuccess);
+            this.Controls.Add(this.labelAddr);
+            this.Controls.Add(this.labelIP);
             this.Controls.Add(this.checkBoxSavePwd);
             this.Controls.Add(this.checkBoxAutoLogin);
             this.Controls.Add(this.buttonRefreshNetStates);
@@ -210,6 +255,10 @@
         private System.Windows.Forms.ToolStripMenuItem Status;
         private System.Windows.Forms.CheckBox checkBoxAutoLogin;
         private System.Windows.Forms.CheckBox checkBoxSavePwd;
+        private System.Windows.Forms.Label labelIP;
+        private System.Windows.Forms.Label labelAddr;
+        private System.Windows.Forms.Label labelSuccess;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

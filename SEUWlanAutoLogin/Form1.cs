@@ -12,7 +12,7 @@ namespace SEUWlanAutoLogin
 {
     public partial class Form1 : Form
     {
-        const int BaloonDelayTime = 2500;
+        const int BaloonDelayTime = 1111;
 
         SEUHttpClient myClient = new SEUHttpClient();
         SEUUser seuUser = new SEUUser();
@@ -21,10 +21,40 @@ namespace SEUWlanAutoLogin
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
+            labelAddr.Text = "";
+            labelIP.Text = "";
+            labelSuccess.Text = "";
+
             this.notifyIcon1.Icon = Properties.Resources.IconNotConnected;
             this.Icon = Properties.Resources.IconConnected;
+
+            SEUConfig newConfig = new SEUConfig();
+            newConfig.ReadConfig();
+            checkBoxAutoLogin.Checked = newConfig.bAutoLog;
+            checkBoxSavePwd.Checked = newConfig.bSavePwd;
+            textBoxStuID.Text = newConfig.StuID;
+            seuUser.StuID = newConfig.StuID;
+            textBoxPwd.Text = newConfig.Pwd;
+            seuUser.Pwd = newConfig.Pwd;
+
+            
+            if (newConfig.bAutoLog)
+            {
+
+                await SEUFooLogin(seuUser);
+            }
+            if (newConfig.StuID == "0")//
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            else 
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.Hide();
+            }
+
         }
 
         private void MainWindow_Click(object sender, EventArgs e)
@@ -85,8 +115,20 @@ namespace SEUWlanAutoLogin
 
         private async void buttonLogin_Click(object sender, EventArgs e)
         {
+            bool bSavePwd = checkBoxSavePwd.Checked;
+            bool bAutoLogin = checkBoxAutoLogin.Checked;
             seuUser = new SEUUser(textBoxStuID.Text, textBoxPwd.Text);
-            await SEUFooLogin(seuUser);
+            SEUConfig newConfig = new SEUConfig();
+            newConfig.StuID = seuUser.StuID;
+            newConfig.Pwd = seuUser.Pwd;
+            newConfig.bSavePwd = bSavePwd;
+            newConfig.bAutoLog = bAutoLogin;
+            
+            var netStatus = await SEUFooLogin(seuUser);
+            if(netStatus.error == null)
+            {
+                newConfig.SaveToJson();//登录成功，帐号密码，配置参数保存到磁盘
+            }
         }
 
         private async void Connect_Click(object sender, EventArgs e)
@@ -176,6 +218,24 @@ namespace SEUWlanAutoLogin
             {
                 notifyIcon1.Icon = Properties.Resources.IconNotConnected;
             }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            MainWindow_Click(null, null);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }

@@ -74,24 +74,32 @@ namespace SEUWlanAutoLogin
             Uri uri = new Uri("https://w.seu.edu.cn/portal/init.php");
             string resp = await SEUHttpClientGet(uri);
             var definition = new { login = "" };
-            var jsonLogInfo = JsonConvert.DeserializeAnonymousType(resp, definition);
+            
             SEUUser seuUser = new SEUUser();
-            if(jsonLogInfo.login != null)
+            try
             {
-                var definition2 = new { login_username = "", login_ip = "", login_location="" };
-                var jsonLogInfo2 = JsonConvert.DeserializeAnonymousType(resp, definition2);
-                seuUser.StuID = jsonLogInfo2.login_username;
-                seuUser.IpAddr = jsonLogInfo2.login_ip;
-                seuUser.Location = jsonLogInfo2.login_location;
+                var jsonLogInfo = JsonConvert.DeserializeAnonymousType(resp, definition);
+
+                if (jsonLogInfo.login != null)
+                {
+                    var definition2 = new { login_username = "", login_ip = "", login_location = "" };
+                    var jsonLogInfo2 = JsonConvert.DeserializeAnonymousType(resp, definition2);
+                    seuUser.StuID = jsonLogInfo2.login_username;
+                    seuUser.IpAddr = jsonLogInfo2.login_ip;
+                    seuUser.Location = jsonLogInfo2.login_location;
+                }
+                else
+                {
+                    var definition2 = new { login_ip = "", login_location = "" };
+                    var jsonLogInfo2 = JsonConvert.DeserializeAnonymousType(resp, definition2);
+                    seuUser.StuID = "0";
+                    seuUser.IpAddr = jsonLogInfo2.login_ip;
+                    seuUser.Location = jsonLogInfo2.login_location;
+                }
             }
-            else
-            {
-                var definition2 = new { login_ip = "", login_location = "" };
-                var jsonLogInfo2 = JsonConvert.DeserializeAnonymousType(resp, definition2);
-                seuUser.StuID = "0";
-                seuUser.IpAddr = jsonLogInfo2.login_ip;
-                seuUser.Location = jsonLogInfo2.login_location;
-            }
+            catch
+            { }
+            
             return seuUser;
             
         }

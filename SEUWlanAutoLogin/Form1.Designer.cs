@@ -42,6 +42,7 @@
             this.DisConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.Status = new System.Windows.Forms.ToolStripMenuItem();
             this.MainWindow = new System.Windows.Forms.ToolStripMenuItem();
+            this.Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxAutoLogin = new System.Windows.Forms.CheckBox();
             this.checkBoxSavePwd = new System.Windows.Forms.CheckBox();
             this.labelIP = new System.Windows.Forms.Label();
@@ -49,7 +50,7 @@
             this.labelSuccess = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
-            this.Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonBandwidth = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,35 +133,42 @@
             this.MainWindow,
             this.Exit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 114);
             // 
             // Connect
             // 
             this.Connect.Name = "Connect";
-            this.Connect.Size = new System.Drawing.Size(152, 22);
+            this.Connect.Size = new System.Drawing.Size(112, 22);
             this.Connect.Text = "连接";
             this.Connect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // DisConnect
             // 
             this.DisConnect.Name = "DisConnect";
-            this.DisConnect.Size = new System.Drawing.Size(152, 22);
+            this.DisConnect.Size = new System.Drawing.Size(112, 22);
             this.DisConnect.Text = "断开";
             this.DisConnect.Click += new System.EventHandler(this.DisConnect_Click);
             // 
             // Status
             // 
             this.Status.Name = "Status";
-            this.Status.Size = new System.Drawing.Size(152, 22);
+            this.Status.Size = new System.Drawing.Size(112, 22);
             this.Status.Text = "状态";
             this.Status.Click += new System.EventHandler(this.Status_Click);
             // 
             // MainWindow
             // 
             this.MainWindow.Name = "MainWindow";
-            this.MainWindow.Size = new System.Drawing.Size(152, 22);
+            this.MainWindow.Size = new System.Drawing.Size(112, 22);
             this.MainWindow.Text = "主窗口";
             this.MainWindow.Click += new System.EventHandler(this.MainWindow_Click);
+            // 
+            // Exit
+            // 
+            this.Exit.Name = "Exit";
+            this.Exit.Size = new System.Drawing.Size(112, 22);
+            this.Exit.Text = "退出";
+            this.Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // checkBoxAutoLogin
             // 
@@ -223,18 +231,22 @@
             this.label3.Size = new System.Drawing.Size(367, 2);
             this.label3.TabIndex = 18;
             // 
-            // Exit
+            // buttonBandwidth
             // 
-            this.Exit.Name = "Exit";
-            this.Exit.Size = new System.Drawing.Size(152, 22);
-            this.Exit.Text = "退出";
-            this.Exit.Click += new System.EventHandler(this.Exit_Click);
+            this.buttonBandwidth.Location = new System.Drawing.Point(12, 227);
+            this.buttonBandwidth.Name = "buttonBandwidth";
+            this.buttonBandwidth.Size = new System.Drawing.Size(75, 23);
+            this.buttonBandwidth.TabIndex = 19;
+            this.buttonBandwidth.Text = "流量";
+            this.buttonBandwidth.UseVisualStyleBackColor = true;
+            this.buttonBandwidth.Click += new System.EventHandler(this.buttonBandwidth_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(269, 328);
+            this.Controls.Add(this.buttonBandwidth);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.labelSuccess);
             this.Controls.Add(this.labelAddr);
@@ -284,6 +296,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem Exit;
+        private System.Windows.Forms.Button buttonBandwidth;
     }
 }
 

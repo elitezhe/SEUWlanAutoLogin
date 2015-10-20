@@ -16,12 +16,14 @@ namespace SEUWlanAutoLogin
         private HttpClientHandler seuHttpHandler;
         private HttpClient seuHttpClient;
 
+        
         public SEUHttpClient()
         {
             cookieContainer = new CookieContainer();
             seuHttpHandler = new HttpClientHandler();
             seuHttpHandler.CookieContainer = cookieContainer;
             seuHttpClient = new HttpClient(seuHttpHandler);
+                        
         }
 
         /// <summary>

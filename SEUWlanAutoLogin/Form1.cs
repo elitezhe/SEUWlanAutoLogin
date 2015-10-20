@@ -238,5 +238,12 @@ namespace SEUWlanAutoLogin
             this.Close();
         }
 
+        private void buttonBandwidth_Click(object sender, EventArgs e)
+        {
+            BandwidthDlg bandDlg = new BandwidthDlg();
+            bandDlg.seuUser = new SEUUser(seuUser);
+            bandDlg.ShowDialog();
+        }
+
     }
 }

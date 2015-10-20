@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEUWlanAutoLogin
 {
-    class SEUUser
+    public class SEUUser
     {
         public string StuID { get; set; }
         public string Pwd { get; set; }

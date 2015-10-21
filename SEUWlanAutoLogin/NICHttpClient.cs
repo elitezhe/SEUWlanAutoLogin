@@ -121,6 +121,21 @@ namespace SEUWlanAutoLogin
                     {
                         logDetails.Add(node.InnerText.Trim());
                     }
+                    if(i<lastIndex)
+                    {
+                        string offlineString = tmpNodelist.ElementAt(3).InnerHtml.Trim();
+                        int firstInd = offlineString.IndexOf("(");
+                        int lastInd = offlineString.IndexOf(")");
+                        string catedOfflineString = offlineString.Substring(firstInd + 1, lastInd - (firstInd + 1));
+                        string[] spliter = { ",", "'" };
+                        var splitedString = catedOfflineString.Split(spliter, System.StringSplitOptions.RemoveEmptyEntries);
+
+                        string seesinId = splitedString.ElementAt(2);
+                        string nasIp = splitedString.ElementAt(4);
+                        logDetails.Add(seesinId);
+                        logDetails.Add(nasIp);
+                    }
+                    
                     logDetailList.Add(logDetails);
 
                 }
@@ -130,5 +145,21 @@ namespace SEUWlanAutoLogin
             return logDetailList;
         }
     
+        public async Task<bool> CampusKickIP(string ipAddr, string seesionId, string nasIp)
+        {
+            Uri uri = new Uri("https://selfservice.seu.edu.cn/selfservice/service_manage_status_web.php");
+            var postdata = new FormUrlEncodedContent(
+                new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("operation","offline"),
+                    new KeyValuePair<string, string>("kick_ip_address",ipAddr),
+                    new KeyValuePair<string, string>("session_id",seesionId),
+                    new KeyValuePair<string, string>("nas_ip_address",nasIp)
+                });
+            string resp = await NICHttpClientPost(uri, postdata);
+
+            //to be implented!!!!!!!!!!!!!
+            return true;
+        }
     }
 }

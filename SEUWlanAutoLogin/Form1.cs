@@ -39,11 +39,12 @@ namespace SEUWlanAutoLogin
             textBoxPwd.Text = newConfig.Pwd;
             seuUser.Pwd = newConfig.Pwd;
 
-            
+            //this.Hide();
             if (newConfig.bAutoLog)
             {
 
                 await SEUFooLogin(seuUser);
+                //this.Hide();
             }
             if (newConfig.StuID == "0")//
             {
@@ -220,9 +221,20 @@ namespace SEUWlanAutoLogin
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private async void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            MainWindow_Click(null, null);
+            //MainWindow_Click(null, null);
+            var netStatus = await myClient.CampusNetIsLogin();
+            if (netStatus.StuID != "0") //已连接
+            {
+                buttonLogout_Click(null, null);
+            }
+            else
+            {
+                
+                Connect_Click(null, null);
+            }
+
         }
 
         private void Form1_Resize(object sender, EventArgs e)

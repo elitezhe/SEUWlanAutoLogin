@@ -39,6 +39,11 @@ namespace SEUWlanAutoLogin
             this.bAutoLog = conf.bAutoLog;
             this.bSavePwd = conf.bSavePwd;
         }
+        /// <summary>
+        /// 读取保存在硬盘的配置文件。
+        /// 如果不存在配置文件，则设置一卡通号为"0"作为标志。
+        /// </summary>
+        /// <returns></returns>
         public void ReadConfig()
         {
             if(File.Exists(jsonPath))

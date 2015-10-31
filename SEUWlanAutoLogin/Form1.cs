@@ -52,8 +52,11 @@ namespace SEUWlanAutoLogin
             }
             else 
             {
+                
                 this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
                 this.Hide();
+                
             }
 
         }
@@ -63,11 +66,13 @@ namespace SEUWlanAutoLogin
             if (this.WindowState == FormWindowState.Normal)
             {
                 this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
                 this.Hide();
             }
             else if (this.WindowState == FormWindowState.Minimized)
             {
                 this.Show();
+                this.ShowInTaskbar = true;
                 this.WindowState = FormWindowState.Normal;
                 this.Activate();
             }
@@ -242,6 +247,7 @@ namespace SEUWlanAutoLogin
             if (this.WindowState == FormWindowState.Minimized)
             {
                 this.Hide();
+                this.ShowInTaskbar = false;
             }
         }
 

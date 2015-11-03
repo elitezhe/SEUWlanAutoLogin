@@ -99,8 +99,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BandwidthDlg";
-            this.Text = "BandwidthDlg";
+            this.ShowIcon = false;
+            this.Text = "在线终端与流量情况";
             this.Load += new System.EventHandler(this.BandwidthDlg_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
